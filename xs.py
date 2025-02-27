@@ -3,7 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 import base64
-print (TG_USER_ID)
 now = datetime.today()
 now = now.strftime('%Y-%m-%d')
 qbt, tr, trx, jpx, bx =[], [], [], [], []
