@@ -5,6 +5,11 @@ from datetime import datetime
 import os
 TG_BOT_TOKEN = ''
 TG_USER_ID = ''
+if os.environ.get('TG_BOT_TOKEN'):
+     TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
+if os.environ.get('TG_USER_ID'):
+    TG_USER_ID = os.environ['TG_USER_ID']
+print (TG_BOT_TOKEN)
 now = datetime.today()
 now = now.strftime('%Y-%m-%d')
 qbt, tr, trx, jpx, bx =[], [], [], [], []
@@ -90,11 +95,7 @@ def pushplus(title, content):
     except requests.exceptions.RequestException as e:
         print("s消息推送出错:", e)
 def tel(title, content):
-    if os.environ.get('TG_BOT_TOKEN'):
-        TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
-    if os.environ.get('TG_USER_ID'):
-        TG_USER_ID = os.environ['TG_USER_ID']
-        print (TG_BOT_TOKEN)
+    
         
     # PushPlus请求URL
     urlp = "https://api.telegram.org/bot" + TG_BOT_TOKEN + "/sendMessage"
