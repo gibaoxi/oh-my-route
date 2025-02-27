@@ -6,10 +6,12 @@ import os
 TG_BOT_TOKEN = ''
 TG_USER_ID = ''
 if os.environ.get('TG_BOT_TOKEN'):
+    global TG_BOT_TOKEN
     TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
 if os.environ.get('TG_USER_ID'):
+    global TG_USER_ID
     TG_USER_ID = os.environ['TG_USER_ID']
-    print (TG_BOT_TOKEN)
+print (TG_USER_ID)
 now = datetime.today()
 now = now.strftime('%Y-%m-%d')
 qbt, tr, trx, jpx, bx =[], [], [], [], []
