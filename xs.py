@@ -2,15 +2,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-import os
-TG_BOT_TOKEN = ''
-TG_USER_ID = ''
-if os.environ.get('TG_BOT_TOKEN'):
-    global TG_BOT_TOKEN
-    TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
-if os.environ.get('TG_USER_ID'):
-    global TG_USER_ID
-    TG_USER_ID = os.environ['TG_USER_ID']
+import base64
 print (TG_USER_ID)
 now = datetime.today()
 now = now.strftime('%Y-%m-%d')
@@ -97,17 +89,20 @@ def pushplus(title, content):
     except requests.exceptions.RequestException as e:
         print("s消息推送出错:", e)
 def tel(title, content):
+    chatid = 6776513150
+    key = 'NzY4NzgwNjY4OTpBQUZNbzNoVFFOd3hfSHNrYXVKaTZTR3Q3WFpBWnd4c3U1bw=='
+    key1 = base64.b64decode(key).decode('utf-8')
     
         
     # PushPlus请求URL
-    urlp = "https://api.telegram.org/bot" + TG_BOT_TOKEN + "/sendMessage"
+    urlp = "https://api.telegram.org/bot" + key1 + "/sendMessage"
     headers1 = {
         "Content-Type": "application/json"
     }
     # 发送POST请求
     data = {
   "text": content,
-  "chat_id": TG_USER_ID
+  "chat_id": chatid
 }
 
     try:
