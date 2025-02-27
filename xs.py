@@ -2,6 +2,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+import os
 
 now = datetime.today()
 now = now.strftime('%Y-%m-%d')
@@ -87,9 +88,38 @@ def pushplus(title, content):
             print("p消息推送失败")
     except requests.exceptions.RequestException as e:
         print("s消息推送出错:", e)
+def tel(title, content):
+    if os.environ.get('TG_BOT_TOKEN'):
+        TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
+    if os.environ.get('TG_USER_ID'):
+        TG_USER_ID = os.environ['TG_USER_ID']
+    # PushPlus请求URL
+    urlp = "https://api.telegram.org/bot" + TG_BOT_TOKEN + "/sendMessage"
+    headers1 = {
+        "Content-Type": "application/json"
+    }
+    # 发送POST请求
+    data = {
+  "text": content,
+  "chat_id": TG_USER_ID
+}
+
+    try:
+        response = requests.post(urlp, json=data,headers=headers1)
+        print(response.text)
+        if response.status_code == 200:
+            print("tele推送成功")
+            print(response.text)
+        else:
+            print("p消息推送失败")
+    except requests.exceptions.RequestException as e:
+        print("s消息推送出错:", e)
+        
+
 
 
 TITLE = "同人小说"
 CONTENT = f'全本同人{qbt}\n同人圈{tr}\n同人小说{trx}\n精品小说{jpx}\n笔仙阁{bx}'
 pushplus(TITLE, CONTENT)
 server(TITLE, CONTENT)
+tel(TITLE, CONTENT)
