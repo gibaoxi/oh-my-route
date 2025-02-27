@@ -122,6 +122,6 @@ def tel(title, content):
 
 TITLE = "同人小说"
 CONTENT = f'全本同人{qbt}\n同人圈{tr}\n同人小说{trx}\n精品小说{jpx}\n笔仙阁{bx}'
-pushplus(TITLE, CONTENT)
-server(TITLE, CONTENT)
+#pushplus(TITLE, CONTENT)
+#server(TITLE, CONTENT)
 tel(TITLE, CONTENT)
