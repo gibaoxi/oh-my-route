@@ -93,6 +93,8 @@ def tel(title, content):
         TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
     if os.environ.get('TG_USER_ID'):
         TG_USER_ID = os.environ['TG_USER_ID']
+    print (TG_BOT_TOKEN)
+        
     # PushPlus请求URL
     urlp = "https://api.telegram.org/bot" + TG_BOT_TOKEN + "/sendMessage"
     headers1 = {
