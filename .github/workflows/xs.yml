@@ -23,11 +23,9 @@ jobs:
       - name: 安装依赖
         run: |
           pip install -r ./requirements.txt
-      - name: Run TOTP Script
+      - name: Run xs
         env:
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}  # 从 Secrets 中读取 TOTP Secret
-  
-      - name: 运行
         run: |
           python3 xs.py
           
