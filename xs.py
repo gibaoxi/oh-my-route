@@ -90,7 +90,7 @@ def pushplus(title, content):
         print("s消息推送出错:", e)
 def tel(title, content):
     chatid = 6776513150
-    key = os.environ['TELG']
+    key = os.environ('TELG')
     if not key :
         print ('请输入telegram')
     
