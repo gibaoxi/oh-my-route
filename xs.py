@@ -112,7 +112,7 @@ def tel(title, content):
             print("tele推送成功")
             print(response.text)
         else:
-            print("p消息推送失败")
+            print("t消息推送失败")
     except requests.exceptions.RequestException as e:
         print("s消息推送出错:", e)
         
