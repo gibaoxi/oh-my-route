@@ -90,10 +90,9 @@ def pushplus(title, content):
         print("s消息推送出错:", e)
 def tel(title, content):
     chatid = 6776513150
-    key = os.environ('TELG')
+    key = os.getenv('TG_BOT_TOKEN')
     if not key :
-        print ('请输入telegram')
-    
+        raise ValueError("未找到 TOTP Secret，请确保已正确配置 GitHub Secrets。")
         
     # PushPlus请求URL
     urlp = "https://api.telegram.org/bot" + key + "/sendMessage"
