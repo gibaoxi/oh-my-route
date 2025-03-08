@@ -1,4 +1,5 @@
 # coding=utf-8
+import os
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -89,8 +90,9 @@ def pushplus(title, content):
         print("s消息推送出错:", e)
 def tel(title, content):
     chatid = 6776513150
-    key = 'NzY4NzgwNjY4OTpBQUZNbzNoVFFOd3hfSHNrYXVKaTZTR3Q3WFpBWnd4c3U1bw=='
-    key1 = base64.b64decode(key).decode('utf-8')
+    key = os.getnv('TELG')
+    if not key :
+        print ('请输入telegram')
     
         
     # PushPlus请求URL
