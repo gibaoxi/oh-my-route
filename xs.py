@@ -96,7 +96,7 @@ def tel(title, content):
     
         
     # PushPlus请求URL
-    urlp = "https://api.telegram.org/bot" + key1 + "/sendMessage"
+    urlp = "https://api.telegram.org/bot" + key + "/sendMessage"
     headers1 = {
         "Content-Type": "application/json"
     }
