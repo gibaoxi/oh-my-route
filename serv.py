@@ -56,14 +56,13 @@ def main():
     if current_users is None or total_users is None:
         return
 
-    # 比较用户数量
     if current_users == total_users:
-        result = "是"
+        result = "无"
     else:
-        result = "否"
+        result = "有"
 
     # 发送结果到 QQ
-    message = f"已有用户数: {current_users}, 总用户数: {total_users}, 是否相同: {result}"
+    message = f"{current_users}/{total_users},{result}"
     send_qmsg(message)
 
 if __name__ == '__main__':
