@@ -61,9 +61,11 @@ def main():
     else:
         result = "有"
 
-    # 发送结果到 QQ
-    message = f"{current_users}/{total_users},{result}"
-    send_qmsg(message)
+    # 当 result 等于 "有" 时才发送通知
+    if result == "有":
+        # 发送结果到 QQ
+        message = f"{current_users}/{total_users},{result}"
+        send_qmsg(message)
 
 if __name__ == '__main__':
     main()
