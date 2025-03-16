@@ -47,7 +47,7 @@ def pushplus(title, message):
         print(f"PushPlus 通知发送失败: {response.text}")
 
 # Telegram 通知
-def teregram(message):
+def telegram(message):
     """
     使用 Telegram 发送通知
     :param message: 通知内容
