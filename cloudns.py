@@ -70,18 +70,18 @@ def login_to_cloudflare():
             print("Cloudflare 登录成功！")
             print("账户信息：", data)
             # 调用 Telegram 通知函数
-            send_telegram_notification(
+            telegram(
                 f"Cloudflare 登录成功！账户信息： {data}
                 "
             )
         else:
             print("Cloudflare 登录失败：", data['errors'])
             # 调用 Telegram 通知函数
-            send_telegram_notification(f"Cloudflare 登录失败：{data['errors']}")
+            telegram(f"Cloudflare 登录失败：{data['errors']}")
     else:
         print("请求失败，状态码：", response.status_code)
         # 调用 Telegram 通知函数
-        send_telegram_notification(f"Cloudflare 请求失败，状态码：{response.status_code}")
+        telegram(f"Cloudflare 请求失败，状态码：{response.status_code}")
 
 if __name__ == '__main__':
     # 调用 Cloudflare 登录函数
