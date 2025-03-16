@@ -31,15 +31,15 @@ def login_to_cloudns():
         data = response.json()
         if data['status'] == 'Success':
             print("登录成功！")
-            print("账户信息：", data)
+            telegram("登陆成功：", data)
         else:
             print("登录失败：", data['statusDescription'])
             # 调用 Telegram 通知函数
-            teregram(f"ClouDNS 登录失败：{data['statusDescription']}")
+            telegram(f"ClouDNS 登录失败：{data['statusDescription']}")
     else:
         print("请求失败，状态码：", response.status_code)
         # 调用 Telegram 通知函数
-        teregram(f"ClouDNS 请求失败，状态码：{response.status_code}")
+        telegram(f"ClouDNS 请求失败，状态码：{response.status_code}")
 
 if __name__ == '__main__':
     # 调用 ClouDNS 登录函数
