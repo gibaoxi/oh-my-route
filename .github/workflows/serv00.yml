@@ -25,7 +25,7 @@ jobs:
 
       - name: Run SSH script
         env:
-          SERV00_USERNAME: ${{ secrets.SERV00_USERNAME }}
-          SERV00_PASSWORD: ${{ secrets.SERV00_PASSWORD }}
+          SERV00_USERNAME: ${{ secrets.SERV00N }}
+          SERV00_PASSWORD: ${{ secrets.SERV00P }}
         run: |
           python serv00.py
