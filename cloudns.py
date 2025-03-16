@@ -31,7 +31,7 @@ def login_to_cloudns():
         data = response.json()
         if data['status'] == 'Success':
             print("登录成功！")
-            telegram("登陆成功:{data}")
+            telegram(f"登陆成功:{data}")
         else:
             print("登录失败：", data['statusDescription'])
             # 调用 Telegram 通知函数
@@ -71,9 +71,7 @@ def login_to_cloudflare():
             print("账户信息：", data)
             # 调用 Telegram 通知函数
             telegram(
-                f"Cloudflare 登录成功！账户信息： {data}
-                "
-            )
+                f"Cloudflare 登录成功！账户信息： {data}")
         else:
             print("Cloudflare 登录失败：", data['errors'])
             # 调用 Telegram 通知函数
