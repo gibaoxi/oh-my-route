@@ -3,8 +3,14 @@ name: xs
 on:
   push:
     branches: [main]
+    paths:
+      - 'xs.yml'
+      - 'xs.py'
   pull_request:
     branches: [main]
+    paths:
+      - 'xs.yml'
+      - 'xs.py'
   schedule:
     - cron: '2 10,15,1,22 * * *'
   watch:
@@ -28,6 +34,3 @@ jobs:
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}  # 从 Secrets 中读取 TOTP Secret
         run: |
           python3 xs.py
-          
-          
-
