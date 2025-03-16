@@ -47,7 +47,7 @@ def pushplus(title, message):
         print(f"PushPlus 通知发送失败: {response.text}")
 
 # Telegram 通知
-def send_telegram_notification(message):
+def teregram(message):
     """
     使用 Telegram 发送通知
     :param message: 通知内容
@@ -69,7 +69,7 @@ def send_telegram_notification(message):
         print(f"Telegram 通知发送失败: {response.text}")
 
 # Qmsg 通知
-def send_qmsg_notification(message, qq=None):
+def qmsg(message, qq=None):
     """
     使用 Qmsg 发送通知
     :param message: 通知内容
