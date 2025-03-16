@@ -1,6 +1,13 @@
 name: serv00ssh
 
+
 on:
+  schedule:
+    # 每天早晨 1 点运行（UTC 时间）
+    - cron: '0 1 * * *'
+
+  # 手动触发工作流（可选）
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -25,7 +32,7 @@ jobs:
 
       - name: Run SSH script
         env:
-          SERV00P: ${{ secrets.SERV00N }}
+          SERV00N: ${{ secrets.SERV00N }}
           SERV00P: ${{ secrets.SERV00P }}
         run: |
           python serv00.py
