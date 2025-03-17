@@ -31,7 +31,7 @@ def login_to_cloudns():
         data = response.json()
         if data['status'] == 'Success':
             print("登录成功！")
-            telegram(f"登陆成功:{data}")
+            telegram(f"cloudns登陆成功:{data}")
         else:
             print("登录失败：", data['statusDescription'])
             # 调用 Telegram 通知函数
@@ -41,6 +41,46 @@ def login_to_cloudns():
         # 调用 Telegram 通知函数
         telegram(f"ClouDNS 请求失败，状态码：{response.status_code}")
 # Cloudflare API 凭证
+def login_to_desec():
+    """
+    登录 deSEC 并返回响应
+
+    :return: requests.Response 对象，登录请求的响应
+    """
+    # 从环境变量中获取邮箱和密码
+    email = os.getenv('EMAIL')
+    password = os.getenv('DESEC')
+
+    # 检查是否成功获取环境变量
+    if not email or not password:
+        raise ValueError("请确保环境变量 EMAIL 和 DESEC 已正确设置")
+
+    # deSEC API 登录端点
+    url = "https://desec.io/api/v1/auth/login/"
+
+    # 请求头
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    # 请求体
+    payload = {
+        "email": email,  # 使用环境变量中的邮箱
+        "password": password  # 使用环境变量中的密码
+    }
+
+    # 发送 POST 请求
+    response = requests.post(url, json=payload, headers=headers)
+    
+# 检查响应状态码
+    if response.status_code == 200:
+        data = response.json()
+        if data.get('owner') == email:  # 检查 owner 字段的值是否与邮箱一致
+            telegram(f"deSEC 登录成功！邮箱: {data['owner']}")
+        else:
+            telegram(f"deSEC 登录失败：owner 字段不匹配，响应结果: {data}")
+    else:
+        telegram(f"deSEC 请求失败，状态码: {response.status_code}, 响应内容: {response.text}")
 
 
 def login_to_cloudflare():
@@ -86,3 +126,4 @@ if __name__ == '__main__':
     login_to_cloudflare()
     # 调用 ClouDNS 登录函数
     login_to_cloudns()
+    login_to_desec()
