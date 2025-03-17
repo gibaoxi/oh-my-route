@@ -31,5 +31,7 @@ jobs:
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           TG_USER_ID: ${{ secrets.TG_USER_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          EMAIL: ${{ secrets.EMAIL }}  # 引用 GitHub Secrets 中的 EMAIL
+          DESEC: ${{ secrets.DESEC }}  # 引用 GitHub Secrets 中的 DESEC
         run: |
           python cloudns.py
