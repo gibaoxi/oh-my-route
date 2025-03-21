@@ -8,9 +8,7 @@ on:
 
   # 手动触发工作流（可选）
   workflow_dispatch:
-  push:
-    branches:
-      - main
+
 
 jobs:
   run-ssh:
