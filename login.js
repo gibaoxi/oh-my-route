@@ -16,7 +16,7 @@ const login = async () => {
     const loginUrl = "https://parseapi.back4app.com/login";
     const loginHeaders = {
         "X-Parse-Application-Id": "BCrUQVkk80pCdeImSXoKXL5ZCtyyEZwbN7mAb11f",
-        "X-Parse-REST-API-Key": "rWFPEbTs7UzkaVsIXnQ4qmmr9oWqwXfiiJehtIZu",
+        "X-Parse-REST-API-Key": "swrFFIXJlFudtF3HkZPtfybDFRTmS7sPwvGUzQ9w",
         "X-Parse-Revocable-Session": "1"
     };
 
