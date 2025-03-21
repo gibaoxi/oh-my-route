@@ -3,7 +3,7 @@ name: cloudns登录
 on:
   schedule:
     # 每天凌晨 2 点运行（UTC 时间）
-    - cron: '0 0 */5 * *'
+    - cron: '0 2 */5 * *'
   workflow_dispatch:  # 允许手动触发
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
         env:
           CLOUDNS_API_ID: ${{ secrets.CLOUDNS_API_ID }}
           CLOUDNS_API_PASSWORD: ${{ secrets.CLOUDNS_API_PASSWORD }}
-          QMSG: ${{ secrets.QMSG }}
+          QMSG_KEY: ${{ secrets.QMSG_KEY }}
           TG_USER_ID: ${{ secrets.TG_USER_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           EMAIL: ${{ secrets.EMAIL }}  # 引用 GitHub Secrets 中的 EMAIL
