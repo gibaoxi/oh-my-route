@@ -1,11 +1,8 @@
 name: login
 on:
-  push:
-    branches:
-      - main  # 当 main 分支有推送时触发
   workflow_dispatch:  # 允许手动触发
   schedule:
-    - cron: '0 0 */5 * *'  # 每 5 天运行一次
+    - cron: '0 4 */5 * *'  # 每 5 天运行一次
 
 jobs:
   run-script:
