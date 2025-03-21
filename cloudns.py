@@ -1,7 +1,7 @@
 # main.py
 import os
 import requests
-from notify import telegram  # 导入 Telegram 通知函数
+from notify import qmsg  # 导入 Telegram 通知函数
 
 # ClouDNS API 凭证
 API_ID = os.getenv('CLOUDNS_API_ID')           # 从环境变量获取 API ID
@@ -31,15 +31,15 @@ def login_to_cloudns():
         data = response.json()
         if data['status'] == 'Success':
             print("登录成功！")
-            telegram(f"cloudns登陆成功:{data}")
+            qmsg(f"cloudns登陆成功:{data}")
         else:
             print("登录失败：", data['statusDescription'])
             # 调用 Telegram 通知函数
-            telegram(f"ClouDNS 登录失败：{data['statusDescription']}")
+            qmsg(f"ClouDNS 登录失败：{data['statusDescription']}")
     else:
         print("请求失败，状态码：", response.status_code)
         # 调用 Telegram 通知函数
-        telegram(f"ClouDNS 请求失败，状态码：{response.status_code}")
+        qmsg(f"ClouDNS 请求失败，状态码：{response.status_code}")
 # Cloudflare API 凭证
 def login_to_desec():
     """
@@ -76,11 +76,11 @@ def login_to_desec():
     if response.status_code == 200:
         data = response.json()
         if data.get('owner') == email:  # 检查 owner 字段的值是否与邮箱一致
-            telegram(f"deSEC 登录成功！邮箱: {data['owner']}")
+            qmsg(f"deSEC 登录成功！邮箱: {data['owner']}")
         else:
-            telegram(f"deSEC 登录失败：owner 字段不匹配，响应结果: {data}")
+            qmsg(f"deSEC 登录失败：owner 字段不匹配，响应结果: {data}")
     else:
-        telegram(f"deSEC 请求失败，状态码: {response.status_code}, 响应内容: {response.text}")
+        qmsg(f"deSEC 请求失败，状态码: {response.status_code}, 响应内容: {response.text}")
 
 
 def login_to_cloudflare():
@@ -110,16 +110,16 @@ def login_to_cloudflare():
             print("Cloudflare 登录成功！")
             print("账户信息：", data)
             # 调用 Telegram 通知函数
-            telegram(
+            qmsg(
                 f"Cloudflare 登录成功！账户信息： {data}")
         else:
             print("Cloudflare 登录失败：", data['errors'])
             # 调用 Telegram 通知函数
-            telegram(f"Cloudflare 登录失败：{data['errors']}")
+            qmsg(f"Cloudflare 登录失败：{data['errors']}")
     else:
         print("请求失败，状态码：", response.status_code)
         # 调用 Telegram 通知函数
-        telegram(f"Cloudflare 请求失败，状态码：{response.status_code}")
+        qmsg(f"Cloudflare 请求失败，状态码：{response.status_code}")
 
 if __name__ == '__main__':
     # 调用 Cloudflare 登录函数
