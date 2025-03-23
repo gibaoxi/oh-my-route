@@ -12,7 +12,7 @@ on:
       - 'xs.yml'
       - 'xs.py'
   schedule:
-    - cron: '2 * * * *'
+    - cron: '2 */2 * * *'
   watch:
     types: started
 
