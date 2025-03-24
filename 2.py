@@ -8,7 +8,7 @@ password = "YoxWfDHf8C6B"  # 替换为你的密码
 def login_and_get_cookies():
     with sync_playwright() as p:
         # 启动浏览器
-        browser = p.chromium.launch(headless=False)  # headless=False 表示显示浏览器窗口
+        browser = p.chromium.launch(headless=True)  # headless=False 表示显示浏览器窗口
         context = browser.new_context()
         page = context.new_page()
 
