@@ -9,15 +9,4 @@
     "type": "vmess",
     "config": "vless://b10697ab-b6b5-49ce-ae19-d572f4a0c251@yyb3-uan1nf25.b4a.run:443/?type=ws&encryption=none&host=yyb3-uan1nf25.b4a.run&path=%2F&security=tls&sni=yyb3-uan1nf25.b4a.run#back4%E7%BE%8E%E5%9B%BD"
   }
-][
-  {
-    "name": "美国节点1",
-    "type": "hysteria",
-    "config": "hysteria://username:password@example.com:443?protocol=udp"
-  },
-  {
-    "name": "日本节点2",
-    "type": "vmess",
-    "config": "vmess://..."
-  }
 ]
