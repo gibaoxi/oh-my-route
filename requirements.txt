@@ -2,5 +2,5 @@ requests
 bs4
 datetime
 playwright
-pysocks
+pysocks requests
 time
