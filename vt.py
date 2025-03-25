@@ -4,7 +4,7 @@ import time
 import requests
 from urllib.parse import urlparse
 
-def test_single_node(node_config, test_url="https://www.gstatic.com/generate_204"):
+def test_single_node(node_config, test_url="https://www.google.com.hk"):
     """测试单个节点速度"""
     result = {
         "name": node_config["name"],
