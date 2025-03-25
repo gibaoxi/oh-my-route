@@ -3,7 +3,6 @@ import os
 import time
 import requests
 from urllib.parse import urlparse
-import pysocks
 
 def test_single_node(node_config, test_url="https://www.google.com.hk"):
     """测试单个节点速度"""
@@ -77,7 +76,7 @@ if __name__ == "__main__":
             f.write(f"速度: {best_node['speed']}KB/s\n")
             f.write(f"配置: {best_node['config']}\n")
         else:
-            f.write("没有可用的节点\n")
+            f.write("没有1可用的节点\n")
     
     # 5. 生成完整报告
     with open("results/full_report.md", "w") as f:
