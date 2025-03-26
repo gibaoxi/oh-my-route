@@ -7,45 +7,37 @@ on:
     branches: [ main ]
   workflow_dispatch:
   schedule:
-    - cron: '3 21 * * *'  # 每天UTC时间21:03运行
-
-jobs:
+    - cron: '3 21 * * *'  # 每天UTC时间21:03运行jobs:
   update:
     runs-on: ubuntu-latest
+    env:
+      GVURL: ${{ secrets.GVURL }}  # 全局变量
     permissions:
-      contents: write  # 添加推送权限
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: true  # 保留推送凭证
+          persist-credentials: true
 
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
       - name: Install dependencies
-        env:
-          GVURL: ${{ secrets.GVURL }}  # 修复缺少的闭合括号
-        run: |
-          pip install requests beautifulsoup4
+        run: pip install requests beautifulsoup4
 
+      - name: Debug env
+        run: echo "GVURL值: $GVURL"  # 验证变量
 
       - name: Run script
         run: |
           mkdir -p results
           python gv.py
 
-      - name: Commit and push
+      - name: Commit changes
+        if: success()
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          
-          # 只有当文件有变化时才提交
-          if git diff --quiet --exit-code -- results/; then
-            echo "没有检测到文件变化，跳过提交"
-          else
-            git add results/
-            git commit -m "自动更新 $(date +'%Y-%m-%d %H:%M')"
-            git push
-          fi
+          git add results/
+          git commit -m "Auto update $(date +'%Y-%m-%d')" || echo "No changes"
+          git push
