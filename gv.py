@@ -49,4 +49,5 @@ def fetch_and_save(url):
 
 if __name__ == '__main__':
     url = url  # 测试URL
+    print(url)
     fetch_and_save(url)
