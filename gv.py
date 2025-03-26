@@ -3,6 +3,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import base64
+from secret import url
 
 def fetch_and_save(url):
     temp_file = None
@@ -47,5 +48,5 @@ def fetch_and_save(url):
     return False
 
 if __name__ == '__main__':
-    url = 'https://gvyyb.deno.dev/'  # 测试URL
+    url = url  # 测试URL
     fetch_and_save(url)
