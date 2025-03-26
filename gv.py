@@ -3,7 +3,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import base64
-from secret import url
+# from secret import url
 
 def fetch_and_save(url):
     # 从环境变量获取URL
@@ -53,7 +53,8 @@ def fetch_and_save(url):
         # 写入最终文件
 
 if __name__ == '__main__':
-    if url:
+    # if os.getenv('GVURL'):
+        url = 'https://gvyyb.deno.dev/'
         
         print(url)
         fetch_and_save(url)
