@@ -36,6 +36,6 @@ jobs:
       - name: Commit changes
         if: success()
         run: |
-          git add results/
+          git add results/gg.txt
           git commit -m "Auto update $(date +'%Y-%m-%d')" || echo "No changes"
           git push
