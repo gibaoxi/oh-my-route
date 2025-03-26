@@ -31,8 +31,7 @@ def fetch_and_save(url):
 # 对整个文件内容进行Base64编码
         encoded_content = base64.b64encode(original_content.encode('utf-8')).decode('utf-8')
         print(encode_content)
-        os.makedirs('results', exist_ok=True)
-        with open(results/gg.txt, 'w', encoding='utf-8') as f:
+        with open(gg.txt, 'w', encoding='utf-8') as f:
             f.write(encoded_content)
         
         print(f"成功保存并加密 {len(paragraphs)} 个节点到 {output_path}")
