@@ -3,43 +3,40 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import base64
-# from secret import url
 
 def fetch_and_save(url):
-    # 从环境变量获取URL
-    url = url
+    temp_file = None
     try:
         # 获取网页内容
         response = requests.get(url, timeout=10)
         response.raise_for_status()
-        print(response.text)
-
         
         # 解析HTML
         soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # 先写入临时文件
+        paragraphs = soup.find_all('p')  # 正确定义变量
+
+        # 写入临时文件
         temp_file = 'gg_temp.txt'
         with open(temp_file, 'w', encoding='utf-8') as f:
-            for p in soup.find_all('p'):
-                text = p.get_text().strip()
-                if text:  # 跳过空行
+            for p in paragraphs:
+                if text := p.get_text().strip():
                     f.write(text + '\n')
 
-        
-        # 读取临时文件内容并进行Base64编码
+        # 读取并编码内容
         with open(temp_file, 'r', encoding='utf-8') as f:
-            original_content = f.read()
-# 对整个文件内容进行Base64编码
-        encoded_content = base64.b64encode(original_content.encode('utf-8')).decode('utf-8')
-        print(encode_content)
-        os.makedirs('result', exist_ok=True)
-        with open(gg.txt, 'w', encoding='utf-8') as f:
-            f.write(encoded_content)
+            encoded_content = base64.b64encode(f.read().encode('utf-8')).decode('utf-8')
+
+        # 确保目录存在
+        os.makedirs('results', exist_ok=True)  # 统一使用 'results'
+        output_path = os.path.join('results', 'gg.txt')
         
+        # 写入最终文件
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write(encoded_content)
+
         print(f"成功保存并加密 {len(paragraphs)} 个节点到 {output_path}")
         return True
-        
+
     except requests.exceptions.RequestException as e:
         print(f"网络请求失败: {str(e)}")
     except Exception as e:
@@ -48,13 +45,7 @@ def fetch_and_save(url):
         if temp_file and os.path.exists(temp_file):
             os.remove(temp_file)
     return False
-       
-        
-        # 写入最终文件
 
 if __name__ == '__main__':
-    # if os.getenv('GVURL'):
-        url = 'https://gvyyb.deno.dev/'
-        
-        print(url)
-        fetch_and_save(url)
+    url = 'https://gvyyb.deno.dev/'  # 测试URL
+    fetch_and_save(url)
