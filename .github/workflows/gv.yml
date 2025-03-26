@@ -7,9 +7,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
   schedule:
-    - cron: '3 21 * * *'  # 每天UTC时间21:03运
-
-
+    - cron: '3 21 * * *'
 jobs:
   update:
     runs-on: ubuntu-latest
