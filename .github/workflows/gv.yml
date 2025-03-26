@@ -1,6 +1,12 @@
 name: gv
 
 on:
+  push:
+    branches:
+      - main  # 触发条件：推送到 main 分支时运行
+  pull_request:
+    branches:
+      - main  # 触发条件：创建 pull request 到 main 分支时运行
   workflow_dispatch:  # 手动触发
   schedule:
     - cron: '3 21 * * *'  # 每天UTC时间21:03运行
