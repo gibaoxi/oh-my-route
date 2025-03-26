@@ -33,10 +33,10 @@ jobs:
           # 创建result目录（如果不存在)
           python gv.py  # 确保脚本输出到result目录
       
-      - name: Commit changes
+      - name: cs
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add results/
-          git commit -m "自动更新加密节点列表 $(date +'%Y-%m-%d %H:%M')"
+          git commit -m "Auto update speedtest results" || echo "No changes to commit"
           git push
