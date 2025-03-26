@@ -3,7 +3,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import base64
-from secret import *
+from secret import url
 
 def fetch_and_save(url):
     # 从环境变量获取URL
@@ -12,6 +12,8 @@ def fetch_and_save(url):
         # 获取网页内容
         response = requests.get(url, timeout=10)
         response.raise_for_status()
+        print(response.text)
+
         
         # 解析HTML
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -31,6 +33,7 @@ def fetch_and_save(url):
 # 对整个文件内容进行Base64编码
         encoded_content = base64.b64encode(original_content.encode('utf-8')).decode('utf-8')
         print(encode_content)
+        os.makedirs('result', exist_ok=True)
         with open(gg.txt, 'w', encoding='utf-8') as f:
             f.write(encoded_content)
         
@@ -51,5 +54,6 @@ def fetch_and_save(url):
 
 if __name__ == '__main__':
     if url:
+        
         print(url)
         fetch_and_save(url)
