@@ -1,3 +1,3 @@
 import os
 
-url = os.envget('GVURL')
+url = os.evnget('GVURL')
