@@ -32,7 +32,8 @@ def fetch_and_save(url):
         encoded_content = base64.b64encode(original_content.encode('utf-8')).decode('utf-8')
         
         # 写入最终文件
-        with open('gg.txt', 'w', encoding='utf-8') as f:
+        os.makedirs('result', exist_ok=True)
+        with open('result/gg.txt', 'w', encoding='utf-8') as f:
             f.write(encoded_content)
         
         print(f"成功保存并加密 {len(soup.find_all('p'))} 个节点到 gg.txt")
