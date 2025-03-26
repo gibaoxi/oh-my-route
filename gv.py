@@ -48,6 +48,9 @@ def fetch_and_save(url):
     return False
 
 if __name__ == '__main__':
-    url = url  # 测试URL
-    print(url)
-    fetch_and_save(url)
+    url = os.getenv('GVURL')  # 从环境变量获取
+    if url:
+        print(f"使用URL: {url}")
+        fetch_and_save(url)
+    else:
+        raise ValueError("未设置环境变量 GVURL")  # 或改用默认URL
