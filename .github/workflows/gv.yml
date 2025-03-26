@@ -26,7 +26,7 @@ jobs:
         run: |
           pip install -r requirements.txt  # 如果存在requirements.txt
         env:
-          GV_URL: ${{ secrets.GV_URL }}
+          GVURL: ${{ secrets.GVURL }}
       - name: Create marker file
         run: |
           mkdir -p results
