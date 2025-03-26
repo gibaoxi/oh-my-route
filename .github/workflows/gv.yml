@@ -28,9 +28,6 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4
 
-      - name: Debug env
-        run: echo "GVURL值: $GVURL"  # 验证变量
-
       - name: Run script
         run: |
           mkdir -p results
