@@ -36,5 +36,5 @@ def fetch_and_save(url):
 
 if __name__ == '__main__':
     if url:
-       print(url)
-       fetch_and_save(url)
+        print(url)
+        fetch_and_save(url)
