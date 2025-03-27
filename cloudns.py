@@ -1,6 +1,6 @@
 import os
 import requests
-from notify import qmsg  # 导入 Telegram 通知函数
+from notify import telegram  # 导入 Telegram 通知函数
 
 class Login:
     def __init__(self):
@@ -35,7 +35,7 @@ class Login:
         full_message = f"{service} 登录{status}: {message}"
         if data:
             full_message += f"\n详细信息: {data}"
-        qmsg(full_message)
+        telegram(full_message)
         print(full_message)
     
     def test_cloudns(self):
