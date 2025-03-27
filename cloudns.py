@@ -1,129 +1,138 @@
-# main.py
 import os
 import requests
 from notify import qmsg  # 导入 Telegram 通知函数
 
-# ClouDNS API 凭证
-API_ID = os.getenv('CLOUDNS_API_ID')           # 从环境变量获取 API ID
-API_PASSWORD = os.getenv('CLOUDNS_API_PASSWORD')  # 从环境变量获取 API 密码
-
-# ClouDNS API 基础 URL
-BASE_URL = 'https://api.cloudns.net'
-
-def login_to_cloudns():
-    """
-    登录 ClouDNS 并获取账户信息
-    """
-    # API 路径
-    endpoint = '/login/login.json'
-
-    # 请求参数
-    params = {
-        'auth-id': API_ID,
-        'auth-password': API_PASSWORD
-    }
-
-    # 发送请求
-    response = requests.get(f'{BASE_URL}{endpoint}', params=params)
-
-    # 检查响应状态
-    if response.status_code == 200:
-        data = response.json()
-        if data['status'] == 'Success':
-            print("登录成功！")
-            qmsg(f"cloudns登陆成功:{data}")
-        else:
-            print("登录失败：", data['statusDescription'])
-            # 调用 Telegram 通知函数
-            qmsg(f"ClouDNS 登录失败：{data['statusDescription']}")
-    else:
-        print("请求失败，状态码：", response.status_code)
-        # 调用 Telegram 通知函数
-        qmsg(f"ClouDNS 请求失败，状态码：{response.status_code}")
-# Cloudflare API 凭证
-def login_to_desec():
-    """
-    登录 deSEC 并返回响应
-
-    :return: requests.Response 对象，登录请求的响应
-    """
-    # 从环境变量中获取邮箱和密码
-    email = os.getenv('EMAIL')
-    password = os.getenv('DESEC')
-
-    # 检查是否成功获取环境变量
-    if not email or not password:
-        raise ValueError("请确保环境变量 EMAIL 和 DESEC 已正确设置")
-
-    # deSEC API 登录端点
-    url = "https://desec.io/api/v1/auth/login/"
-
-    # 请求头
-    headers = {
-        "Content-Type": "application/json"
-    }
-
-    # 请求体
-    payload = {
-        "email": email,  # 使用环境变量中的邮箱
-        "password": password  # 使用环境变量中的密码
-    }
-
-    # 发送 POST 请求
-    response = requests.post(url, json=payload, headers=headers)
+class Login:
+    def __init__(self):
+        """
+        初始化 DNS 服务认证测试类
+        """
+        # 从环境变量加载所有需要的凭证
+        self.credentials = {
+            'cloudns': {
+                'api_id': os.getenv('CLOUDNS_API_ID'),
+                'api_password': os.getenv('CLOUDNS_API_PASSWORD')
+            },
+            'cloudflare': {
+                'api_token': os.getenv('CLOUDFLARE_API_TOKEN')
+            },
+            'desec': {
+                'email': os.getenv('EMAIL'),
+                'password': os.getenv('DESEC')
+            }
+        }
     
-# 检查响应状态码
-    if response.status_code == 200:
-        data = response.json()
-        if data.get('owner') == email:  # 检查 owner 字段的值是否与邮箱一致
-            qmsg(f"deSEC 登录成功！邮箱: {data['owner']}")
-        else:
-            qmsg(f"deSEC 登录失败：owner 字段不匹配，响应结果: {data}")
-    else:
-        qmsg(f"deSEC 请求失败，状态码: {response.status_code}, 响应内容: {response.text}")
+    def _send_notification(self, service, success, message, data=None):
+        """
+        发送通知的辅助方法
+        
+        :param service: 服务名称
+        :param success: 是否成功
+        :param message: 消息内容
+        :param data: 附加数据
+        """
+        status = "成功" if success else "失败"
+        full_message = f"{service} 登录{status}: {message}"
+        if data:
+            full_message += f"\n详细信息: {data}"
+        qmsg(full_message)
+        print(full_message)
+    
+    def test_cloudns(self):
+        """
+        测试 ClouDNS API 登录
+        """
+        endpoint = '/login/login.json'
+        params = {
+            'auth-id': self.credentials['cloudns']['api_id'],
+            'auth-password': self.credentials['cloudns']['api_password']
+        }
+        
+        try:
+            response = requests.get(f'https://api.cloudns.net{endpoint}', params=params)
+            if response.status_code == 200:
+                data = response.json()
+                if data['status'] == 'Success':
+                    self._send_notification("ClouDNS", True, "认证成功", data)
+                    return True
+                else:
+                    self._send_notification("ClouDNS", False, data['statusDescription'])
+                    return False
+            else:
+                self._send_notification("ClouDNS", False, f"HTTP状态码: {response.status_code}")
+                return False
+        except Exception as e:
+            self._send_notification("ClouDNS", False, f"请求异常: {str(e)}")
+            return False
+    
+    def test_cloudflare(self):
+        """
+        测试 Cloudflare API 登录
+        """
+        endpoint = '/user/tokens/verify'
+        headers = {
+            'Authorization': f'Bearer {self.credentials["cloudflare"]["api_token"]}',
+            'Content-Type': 'application/json'
+        }
+        
+        try:
+            response = requests.get(f'https://api.cloudflare.com/client/v4{endpoint}', headers=headers)
+            if response.status_code == 200:
+                data = response.json()
+                if data['success']:
+                    self._send_notification("Cloudflare", True, "认证成功", data)
+                    return True
+                else:
+                    self._send_notification("Cloudflare", False, data['errors'])
+                    return False
+            else:
+                self._send_notification("Cloudflare", False, f"HTTP状态码: {response.status_code}")
+                return False
+        except Exception as e:
+            self._send_notification("Cloudflare", False, f"请求异常: {str(e)}")
+            return False
+    
+    def test_desec(self):
+        """
+        测试 deSEC API 登录
+        """
+        url = "https://desec.io/api/v1/auth/login/"
+        headers = {"Content-Type": "application/json"}
+        payload = {
+            "email": self.credentials['desec']['email'],
+            "password": self.credentials['desec']['password']
+        }
+        
+        try:
+            response = requests.post(url, json=payload, headers=headers)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('owner') == self.credentials['desec']['email']:
+                    self._send_notification("deSEC", True, f"认证成功 - 邮箱: {data['owner']}")
+                    return True
+                else:
+                    self._send_notification("deSEC", False, f"owner字段不匹配 - 响应: {data}")
+                    return False
+            else:
+                self._send_notification("deSEC", False, 
+                                       f"HTTP状态码: {response.status_code}, 响应: {response.text}")
+                return False
+        except Exception as e:
+            self._send_notification("deSEC", False, f"请求异常: {str(e)}")
+            return False
+    
+    def alllogin(self):
+        """
+        测试所有 DNS 服务的认证
+        """
+        results = {
+            'cloudns': self.test_cloudns(),
+            'cloudflare': self.test_cloudflare(),
+            'desec': self.test_desec()
+        }
+        return results
 
-
-def login_to_cloudflare():
-    """
-    登录 Cloudflare 并验证 API 凭证
-    """
-    # API 路径
-    CLOUDFLARE_API_TOKEN = os.getenv('CLOUDFLARE_API_TOKEN')  # 从环境变量获取 API Ke     # 从环境变量获取邮箱
-
-# Cloudflare API 基础 URL
-    BASE_URL = 'https://api.cloudflare.com/client/v4'
-    endpoint = '/user/tokens/verify'
-
-    # 请求头
-    headers = {
-        'Authorization': f'Bearer {CLOUDFLARE_API_TOKEN}',
-        'Content-Type': 'application/json'
-    }
-
-    # 发送请求
-    response = requests.get(f'{BASE_URL}{endpoint}', headers=headers)
-
-    # 检查响应状态
-    if response.status_code == 200:
-        data = response.json()
-        if data['success']:
-            print("Cloudflare 登录成功！")
-            print("账户信息：", data)
-            # 调用 Telegram 通知函数
-            qmsg(
-                f"Cloudflare 登录成功！账户信息： {data}")
-        else:
-            print("Cloudflare 登录失败：", data['errors'])
-            # 调用 Telegram 通知函数
-            qmsg(f"Cloudflare 登录失败：{data['errors']}")
-    else:
-        print("请求失败，状态码：", response.status_code)
-        # 调用 Telegram 通知函数
-        qmsg(f"Cloudflare 请求失败，状态码：{response.status_code}")
 
 if __name__ == '__main__':
-    # 调用 Cloudflare 登录函数
-    login_to_cloudflare()
-    # 调用 ClouDNS 登录函数
-    login_to_cloudns()
-    login_to_desec()
+    tester = Login()
+    tester.alllogin()
