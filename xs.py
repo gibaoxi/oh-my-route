@@ -7,8 +7,8 @@ from notify import telegram
 import base64
 now = datetime.today()
 now = now.strftime('%Y-%m-%d')
-qbt, tr, trx, jpx, bx =[], [], [], [], []
-url, url1, url2, url4, url3 = 'https://qbtr.me/tongren/', 'https://tongrenquan.org/tongren/', 'https://trxs.cc/tongren/', 'https://jpxs123.cc/', 'https://bixiange.top/'
+qbt, tr, trx, jpx, bx, trs =[], [], [], [], [], []
+url, url1, url2, url4, url3, url5 = 'https://qbtr.me/tongren/', 'https://tongrenquan.org/tongren/', 'https://trxs.cc/tongren/', 'https://jpxs123.cc/', 'https://bixiange.top/','https://www.tongrenshe.cc/'
 
 def qbtr(urls_to_lists):  
     now = datetime.now().date()  
@@ -39,11 +39,12 @@ if __name__ == '__main__':
     url1: tr,  
     url2: trx, 
     url4: jpx,
-    url3: bx # 假设 url3 也对应 trx 列表  
+    url3: bx,
+    url5: trs # 假设 url3 也对应 trx 列表  
 }  
     qbtr(urls_to_lists)
     TITLE = "同人小说"
-    CONTENT = f'全本同人{qbt}\n同人圈{tr}\n同人小说{trx}\n精品小说{jpx}\n笔仙阁{bx}'
+    CONTENT = f'全本同人{qbt}\n同人圈{tr}\n同人小说{trx}\n精品小说{jpx}\n笔仙阁{bx}\n同人社{trs}'
     with open('novel.txt', 'w',encoding='utf-8') as file:
         file.write(CONTENT)
 
