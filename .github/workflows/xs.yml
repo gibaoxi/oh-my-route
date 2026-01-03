@@ -15,7 +15,7 @@ on:
     - cron: '2 */2 * * *'
   watch:
     types: started
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:
 
 jobs:
   build:
@@ -23,26 +23,84 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: 初始化Python
+        with:
+          fetch-depth: 0
+      
+      - name: 初始化Python环境
         uses: actions/setup-python@v3
         with:
           python-version: 3.9
+          
       - name: 安装依赖
         run: |
-          pip install -r ./requirements.txt
-      - name: Run xs
+          if [ -f "requirements.txt" ]; then
+            pip install -r requirements.txt
+          else
+            echo "⚠️ requirements.txt不存在，跳过依赖安装"
+          fi
+          
+      - name: 准备daili工作目录
+        run: |
+          echo "📁 检查daili目录状态..."
+          
+          # 检查daili是否存在
+          if [ -e "daili" ]; then
+            if [ -f "daili" ]; then
+              echo "🔄 daili是文件，删除并创建为目录"
+              rm -f daili
+              mkdir -p daili
+            elif [ -d "daili" ]; then
+              echo "✅ daili目录已存在"
+              # 确保目录可写
+              chmod 755 daili
+            else
+              echo "❓ daili是特殊文件类型，删除后重建"
+              rm -rf daili
+              mkdir -p daili
+            fi
+          else
+            echo "📁 创建daili目录"
+            mkdir -p daili
+          fi
+          
+          echo "✅ 目录准备完成"
+          ls -la | grep daili
+          
+      - name: 运行主脚本
         env:
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-          TG_USER_ID: ${{ secrets.TG_USER_ID }}# 从 Secrets 中读取 TOTP Secret
+          TG_USER_ID: ${{ secrets.TG_USER_ID }}
         run: |
-          mkdir -p daili
-          python3 xs.py
+          echo "🔧 环境检查:"
+          echo "工作目录: $(pwd)"
+          echo "Python版本: $(python3 --version)"
+          echo "文件列表:"
+          ls -la
+          
+          echo "🚀 开始执行xs.py..."
+          if [ -f "xs.py" ]; then
+            python3 xs.py
+            echo "✅ 脚本执行成功"
+          else
+            echo "❌ xs.py文件不存在"
+            exit 1
+          fi
 
-      # 5. 自动提交变更
-      - name: Commit changes
+      - name: 提交更改
         run: |
+          echo "💾 准备提交更改..."
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add .
-          git commit -m "自动更新小说列表 $(date +'%Y-%m-%d')" || echo "无变更"
-          git push
+          
+          # 检查是否有更改
+          git status
+          
+          if git diff-index --quiet HEAD --; then
+            echo "ℹ️ 没有检测到更改，跳过提交"
+          else
+            echo "📝 检测到更改，正在提交..."
+            git add -A
+            git commit -m "🤖 自动更新 - $(date +'%Y-%m-%d %H:%M:%S')"
+            git push
+            echo "✅ 更改已提交到仓库"
+          fi
