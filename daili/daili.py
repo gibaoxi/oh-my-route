@@ -661,12 +661,12 @@ class GitHubProxyTester:
         print("="*60)
         
         total = len(all_results)
-        success_rate = (self_successful / total * 100) if total > 0 else 0
+        success_rate = (self.successful / total * 100) if total > 0 else 0
         
         print(f"代理类型: {proxy_type}")
         print(f"总代理数: {total}")
-        print(f"成功代理: {self_successful} ({success_rate:.1f}%)")
-        print(f"失败代理: {total - self_successful}")
+        print(f"成功代理: {self.successful} ({success_rate:.1f}%)")
+        print(f"失败代理: {total - self.successful}")
         
         if successful_results:
             site_stats = {}
