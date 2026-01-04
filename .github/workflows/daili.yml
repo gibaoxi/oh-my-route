@@ -1,9 +1,9 @@
-name: daili
+name: Proxy Tester
 
 on:
   schedule:
-    - cron: '0 */4 * * *'
-  workflow_dispatch:
+    - cron: '0 */4 * * *'  # 每4小时运行一次
+  workflow_dispatch:       # 手动触发
   push:
     branches: [main]
 
@@ -15,8 +15,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
-        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0  # 获取所有历史记录，避免浅克隆问题
       
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -33,6 +32,14 @@ jobs:
           pip install requests urllib3
         fi
         
+    - name: Create necessary directories
+      working-directory: ./daili
+      run: |
+        # 确保result目录存在
+        mkdir -p result
+        echo "✅ 目录结构准备完成"
+        ls -la
+        
     - name: Run proxy test
       working-directory: ./daili
       run: |
@@ -40,36 +47,19 @@ jobs:
         
     - name: Commit and push results
       run: |
-        echo "💾 开始提交更改..."
-        
-        # 配置Git
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        git config --global pull.rebase true
-        
-        # 先拉取最新更改
-        echo "📥 拉取远程最新更改..."
-        git pull origin main
         
         # 检查是否有更改
-        echo "🔍 检查更改..."
-        git status
-        
-        # 添加所有更改
         git add -A
-        
-        # 检查是否有需要提交的更改
         if git diff-index --quiet HEAD --; then
           echo "ℹ️ 没有检测到更改，跳过提交"
         else
+          # 拉取远程更改（避免冲突）
+          git pull origin main --rebase
           # 提交更改
-          echo "📝 提交更改..."
-          git commit -m "🤖 Auto update proxy results - $(date +'%Y-%m-%d %H:%M:%S')"
-          
-          # 推送更改
-          echo "📤 推送更改..."
-          git push origin main
-          echo "✅ 更改已成功推送"
+          git commit -m "🤖 Auto update proxy results"
+          git push
         fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
