@@ -700,7 +700,7 @@ class GitHubProxyTester:
             ]
             
             for min_r, max_r, label in latency_ranges:
-                count = sum(1 for r in (successful_results if min_r <= r['latency_ms'] < max_r)
+                count = sum(1 for r in successful_results if min_r <= r['latency_ms'] < max_r)
                 if count > 0:
                     percentage = count / len(successful) * 100
                     bar_length = int(percentage / 5)
