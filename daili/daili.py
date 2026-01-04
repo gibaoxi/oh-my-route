@@ -661,12 +661,12 @@ class GitHubProxyTester:
         print("="*60)
         
         total = len(all_results)
-        success_rate = (successful / total * 100) if total > 0 else 0
+        success_rate = (self_successful / total * 100) if total > 0 else 0
         
         print(f"代理类型: {proxy_type}")
         print(f"总代理数: {total}")
-        print(f"成功代理: {successful} ({success_rate:.1f}%)")
-        print(f"失败代理: {total - successful}")
+        print(f"成功代理: {self_successful} ({success_rate:.1f}%)")
+        print(f"失败代理: {total - self_successful}")
         
         if successful_results:
             site_stats = {}
@@ -700,9 +700,9 @@ class GitHubProxyTester:
             ]
             
             for min_r, max_r, label in latency_ranges:
-                count = sum(1 for r in successful_results if min_r <= r['latency_ms'] < max_r)
+                count = sum(1 for r in (successful_results if min_r <= r['latency_ms'] < max_r)
                 if count > 0:
-                    percentage = count / successful * 100
+                    percentage = count / len(successful) * 100
                     bar_length = int(percentage / 5)
                     bar = "█" * bar_length
                     print(f"  {label:15s}: {count:3d}个 ({percentage:5.1f}%) {bar}")
