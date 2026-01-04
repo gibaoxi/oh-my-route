@@ -46,9 +46,9 @@ class GitHubProxyTester:
         self.result_dir = os.path.join(self.base_dir, "result")
         os.makedirs(self.result_dir, exist_ok=True)
         
-        print(f"🔧 初始化GitHub代理测试器")
-        print(f"📁 工作目录: {self.base_dir}")
-        print(f"💾 结果目录: {self.result_dir}")
+        print(f"🔧🔧 初始化GitHub代理测试器")
+        print(f"📁📁 工作目录: {self.base_dir}")
+        print(f"💾💾 结果目录: {self.result_dir}")
     
     def extract_domain_info(self, url):
         """从URL中提取域名信息和check_string"""
@@ -72,7 +72,7 @@ class GitHubProxyTester:
                 return check_string, site_abbr
                 
         except Exception as e:
-            print(f"❌ 解析URL {url} 失败: {e}")
+            print(f"❌❌ 解析URL {url} 失败: {e}")
             return "website", "web"
     
     def load_test_urls(self):
@@ -83,7 +83,7 @@ class GitHubProxyTester:
         ym_file = os.path.join(self.base_dir, "ym.txt")
         
         if not os.path.exists(ym_file):
-            print(f"❌ ym.txt文件不存在: {ym_file}")
+            print(f"❌❌ ym.txt文件不存在: {ym_file}")
             return []
         
         test_urls = []
@@ -120,12 +120,12 @@ class GitHubProxyTester:
             if unique_test_urls:
                 print(f"✅ 从ym.txt加载了 {len(unique_test_urls)} 个测试网站")
             else:
-                print("❌ 没有有效的测试网站")
+                print("❌❌ 没有有效的测试网站")
             
             return self._test_urls
             
         except Exception as e:
-            print(f"❌ 读取ym.txt失败: {e}")
+            print(f"❌❌ 读取ym.txt失败: {e}")
             return []
     
     def get_test_urls(self):
@@ -137,7 +137,7 @@ class GitHubProxyTester:
     def import_previous_successful_proxies(self):
         """导入上次测试成功的代理到对应文件"""
         if not os.path.exists(self.result_dir):
-            print("❌ result目录不存在，跳过导入")
+            print("❌❌ result目录不存在，跳过导入")
             return
         
         imported_count = 0
@@ -185,12 +185,12 @@ class GitHubProxyTester:
                         imported_count += len(successful_proxies)
                         
                 except Exception as e:
-                    print(f"❌ 导入{info['name']}代理失败: {e}")
+                    print(f"❌❌ 导入{info['name']}代理失败: {e}")
         
         if imported_count > 0:
             print(f"✅ 总共导入 {imported_count} 个成功代理")
         else:
-            print("ℹ️ 没有找到可导入的成功代理")
+            print("ℹℹ️ 没有找到可导入的成功代理")
     
     def clean_proxy(self, proxy_str):
         """清理代理格式"""
@@ -277,7 +277,7 @@ class GitHubProxyTester:
     
     def download_proxy_list(self, url, proxy_type):
         """从指定URL下载代理列表"""
-        print(f"🌐 下载{proxy_type}代理: {url}")
+        print(f"🌐🌐 下载{proxy_type}代理: {url}")
         
         try:
             headers = {
@@ -298,11 +298,11 @@ class GitHubProxyTester:
                 print(f"✅ 下载到 {len(proxies)} 个{proxy_type}代理")
                 return proxies
             else:
-                print(f"❌ 下载失败: HTTP {response.status_code}")
+                print(f"❌❌ 下载失败: HTTP {response.status_code}")
                 return []
                 
         except Exception as e:
-            print(f"❌ 下载失败: {e}")
+            print(f"❌❌ 下载失败: {e}")
             return []
     
     def save_proxies_to_file(self, proxies, file_path, proxy_type):
@@ -312,7 +312,7 @@ class GitHubProxyTester:
             return
         
         unique_proxies = list(set(proxies))
-        print(f"📊 {proxy_type}代理去重后: {len(unique_proxies)} 个")
+        print(f"📊📊 {proxy_type}代理去重后: {len(unique_proxies)} 个")
         
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(f"# {proxy_type}代理列表\n")
@@ -322,17 +322,17 @@ class GitHubProxyTester:
             for proxy in sorted(unique_proxies):
                 f.write(f"{proxy}\n")
         
-        print(f"💾 已保存到: {file_path}")
+        print(f"💾💾 已保存到: {file_path}")
     
     def parse_source_file(self):
         """解析source.txt文件，提取下载链接"""
         source_file = os.path.join(self.base_dir, "source.txt")
         
         if not os.path.exists(source_file):
-            print(f"❌ source.txt文件不存在: {source_file}")
+            print(f"❌❌ source.txt文件不存在: {source_file}")
             return {}
         
-        print(f"📁 解析source.txt文件")
+        print(f"📁📁 解析source.txt文件")
         
         proxy_type_mapping = {
             'http': 'http',
@@ -380,28 +380,28 @@ class GitHubProxyTester:
                     print(f"✅ 解析成功，找到 {sum(len(links) for links in all_links.values())} 个链接")
                     
                 except json.JSONDecodeError as e:
-                    print(f"❌ JSON解析失败: {e}")
+                    print(f"❌❌ JSON解析失败: {e}")
                     return {}
             
             total_links = sum(len(links) for links in all_links.values())
-            print(f"📊 总共找到 {total_links} 个下载链接")
+            print(f"📊📊 总共找到 {total_links} 个下载链接")
             
             return all_links
             
         except Exception as e:
-            print(f"❌ 解析source.txt文件失败: {e}")
+            print(f"❌❌ 解析source.txt文件失败: {e}")
             return {}
     
     def download_and_classify_proxies(self):
         """从source.txt下载代理并分类保存"""
         print("\n" + "="*60)
-        print("📥 开始下载代理并分类")
+        print("📥📥 开始下载代理并分类")
         print("="*60)
         
         all_links = self.parse_source_file()
         
         if not any(all_links.values()):
-            print("❌ 没有找到有效的下载链接")
+            print("❌❌ 没有找到有效的下载链接")
             return
         
         total_downloaded = 0
@@ -410,7 +410,7 @@ class GitHubProxyTester:
             if not links:
                 continue
                 
-            print(f"\n📥 处理{proxy_type.upper()}代理...")
+            print(f"\n📥📥 处理{proxy_type.upper()}代理...")
             
             all_proxies = []
             
@@ -426,16 +426,16 @@ class GitHubProxyTester:
                         proxies = future.result()
                         all_proxies.extend(proxies)
                     except Exception as e:
-                        print(f"❌ 下载失败: {e}")
+                        print(f"❌❌ 下载失败: {e}")
             
             if all_proxies:
                 file_path = os.path.join(self.base_dir, self.proxy_files[proxy_type]['file'])
                 self.save_proxies_to_file(all_proxies, file_path, proxy_type.upper())
                 total_downloaded += len(all_proxies)
             else:
-                print(f"❌ 没有下载到有效的{proxy_type}代理")
+                print(f"❌❌ 没有下载到有效的{proxy_type}代理")
         
-        print(f"\n📥 下载完成，开始导入上次测试成功的代理...")
+        print(f"\n📥📥 下载完成，开始导入上次测试成功的代理...")
         self.import_previous_successful_proxies()
         
         print(f"\n✅ 下载和导入完成! 总共下载 {total_downloaded} 个代理")
@@ -443,10 +443,10 @@ class GitHubProxyTester:
     
     def load_proxies(self, file_path, limit=0):
         """从文件加载代理列表"""
-        print(f"📁 加载代理文件: {os.path.basename(file_path)}")
+        print(f"📁📁 加载代理文件: {os.path.basename(file_path)}")
         
         if not os.path.exists(file_path):
-            print(f"❌ 文件不存在!")
+            print(f"❌❌ 文件不存在!")
             return []
         
         try:
@@ -470,16 +470,16 @@ class GitHubProxyTester:
                 
                 print(f"✅ 成功加载 {len(proxies)} 个代理")
                 if limit > 0 and lines >= limit:
-                    print(f"📊 只加载前 {limit} 个代理")
+                    print(f"📊📊 只加载前 {limit} 个代理")
                 
                 return proxies
                 
         except Exception as e:
-            print(f"❌ 读取文件失败: {e}")
+            print(f"❌❌ 读取文件失败: {e}")
             return []
     
     def test_single_url(self, proxy, test_config, proxy_type):
-        """测试单个URL"""
+        """测试单个URL - 使用requests内置的SOCKS支持"""
         result = {
             'proxy': proxy,
             'proxy_type': proxy_type,
@@ -493,7 +493,10 @@ class GitHubProxyTester:
             'site_abbr': test_config.get('site_abbr', 'web')
         }
         
+        # 生成代理URL
         proxy_url = self.get_proxy_url(proxy, proxy_type)
+        
+        # 设置代理
         proxies = {
             'http': proxy_url,
             'https': proxy_url
@@ -508,6 +511,7 @@ class GitHubProxyTester:
         try:
             start_time = time.time()
             
+            # 使用requests内置的代理支持
             response = requests.get(
                 test_config['url'],
                 proxies=proxies,
@@ -528,6 +532,7 @@ class GitHubProxyTester:
                         result['success'] = True
                         result['error'] = None
                     else:
+                        # 检查页面是否包含常见HTML标记
                         page_text = response.text.lower()
                         common_indicators = ['html', 'http', 'www', 'com', 'net', 'org', 'title', 'body']
                         indicators_found = sum(1 for indicator in common_indicators if indicator in page_text)
@@ -561,6 +566,8 @@ class GitHubProxyTester:
             error_str = str(e)
             if 'timed out' in error_str.lower():
                 result['error'] = '代理超时'
+            elif 'socks' in error_str.lower():
+                result['error'] = 'SOCKS代理错误'
             else:
                 result['error'] = f'代理错误: {error_str[:30]}'
         except requests.exceptions.SSLError as e:
@@ -607,9 +614,9 @@ class GitHubProxyTester:
         if not proxies:
             return [], []
         
-        print(f"\n🚀 开始测试 {len(proxies)} 个{proxy_type}代理")
-        print(f"📊 并发线程: {max_workers}")
-        print(f"⏱ 超时时间: 8秒")
+        print(f"\n🚀🚀 开始测试 {len(proxies)} 个{proxy_type}代理")
+        print(f"📊📊 并发线程: {max_workers}")
+        print(f"⏱⏱⏱ 超时时间: 8秒")
         print("-"*50)
         
         all_results = []
@@ -632,10 +639,10 @@ class GitHubProxyTester:
                 
                 if self.total_tested % 10 == 0 or self.total_tested == len(proxies):
                     percentage = self.total_tested / len(proxies) * 100
-                    print(f"\r📈 进度: {self.total_tested}/{len(proxies)} "
+                    print(f"\r📈📈 进度: {self.total_tested}/{len(proxies)} "
                           f"[{percentage:.1f}%] | "
                           f"✅: {self.successful} | "
-                          f"❌: {self.failed}", end="")
+                          f"❌❌: {self.failed}", end="")
             
             return result
         
@@ -649,15 +656,15 @@ class GitHubProxyTester:
         total_time = time.time() - start_time
         
         print()
-        print(f"⏱ 总耗时: {total_time:.1f}秒")
-        print(f"📊 平均速度: {len(proxies)/total_time:.1f}个/秒")
+        print(f"⏱⏱⏱ 总耗时: {total_time:.1f}秒")
+        print(f"📊📊 平均速度: {len(proxies)/total_time:.1f}个/秒")
         
         return all_results, successful_results
     
     def display_results(self, all_results, successful_results, proxy_type):
         """显示测试结果"""
         print("\n" + "="*60)
-        print("📊 测试结果汇总")
+        print("📊📊 测试结果汇总")
         print("="*60)
         
         total = len(all_results)
@@ -674,7 +681,7 @@ class GitHubProxyTester:
                 site_abbr = result.get('site_abbr', 'unk')
                 site_stats[site_abbr] = site_stats.get(site_abbr, 0) + 1
             
-            print(f"\n🌐 成功网站分布:")
+            print(f"\n🌐🌐 成功网站分布:")
             for site_abbr, count in site_stats.items():
                 print(f"  {site_abbr.upper()}成功: {count}个")
         
@@ -684,12 +691,12 @@ class GitHubProxyTester:
             min_latency = min(latencies)
             max_latency = max(latencies)
             
-            print(f"\n⏱ 延迟统计:")
+            print(f"\n⏱⏱⏱ 延迟统计:")
             print(f"  平均延迟: {avg_latency:.0f}ms")
             print(f"  最快延迟: {min_latency:.0f}ms")
             print(f"  最慢延迟: {max_latency:.0f}ms")
             
-            print(f"\n📈 延迟分布:")
+            print(f"\n📈📈 延迟分布:")
             latency_ranges = [
                 (0, 100, "极快 <100ms"),
                 (100, 200, "快速 100-200ms"),
@@ -710,21 +717,21 @@ class GitHubProxyTester:
         if successful_results:
             fastest = sorted(successful_results, key=lambda x: x['latency_ms'])[:5]
             
-            print(f"\n🚀 最快的5个代理:")
+            print(f"\n🚀🚀 最快的5个代理:")
             for i, result in enumerate(fastest, 1):
                 latency = result['latency_ms']
                 site_abbr = result.get('site_abbr', 'unk')
                 
                 if latency < 100:
-                    indicator = "🟢"
+                    indicator = "🟢🟢🟢"
                 elif latency < 200:
-                    indicator = "🟡"
+                    indicator = "🟡🟡🟡"
                 elif latency < 500:
-                    indicator = "🟠"
+                    indicator = "🟠🟠🟡"
                 elif latency < 1000:
-                    indicator = "🔴"
+                    indicator = "🔴🔴"
                 else:
-                    indicator = "⚫"
+                    indicator = "⚫⚫"
                 
                 print(f"  {i}. {indicator} {result['proxy']:20s} | {latency:5.0f}ms | {site_abbr}")
         
@@ -736,7 +743,7 @@ class GitHubProxyTester:
                 error_key = error.split(':')[0] if ':' in error else error
                 error_stats[error_key] = error_stats.get(error_key, 0) + 1
             
-            print(f"\n❌ 失败原因分析 ({len(failed_results)} 个):")
+            print(f"\n❌❌ 失败原因分析 ({len(failed_results)} 个):")
             for error, count in sorted(error_stats.items(), key=lambda x: x[1], reverse=True)[:5]:
                 percentage = count / len(failed_results) * 100
                 print(f"  {error:30s}: {count:3d}个 ({percentage:5.1f}%)")
@@ -770,30 +777,30 @@ class GitHubProxyTester:
                     proxy_url = self.get_proxy_url(proxy, proxy_type)
                     f.write(f"{proxy_url}/#{latency_str}%20{site_abbr}\n")
             
-            print(f"💾 结果已保存: {result_file}")
-            print(f"📋 格式: 协议://IP:端口/#延迟ms%20网站缩写")
+            print(f"💾💾 结果已保存: {result_file}")
+            print(f"📋📋 格式: 协议://IP:端口/#延迟ms%20网站缩写")
             
             return result_file
         else:
-            print(f"❌ 没有有效的{proxy_type}代理，未保存结果")
+            print(f"❌❌ 没有有效的{proxy_type}代理，未保存结果")
             return None
     
     def test_proxy_type(self, proxy_type, max_workers=20, limit=0):
         """测试特定类型的代理"""
         if proxy_type not in self.proxy_files:
-            print(f"❌ 无效的代理类型: {proxy_type}")
+            print(f"❌❌ 无效的代理类型: {proxy_type}")
             return
         
         info = self.proxy_files[proxy_type]
         file_path = os.path.join(self.base_dir, info['file'])
         
         if not os.path.exists(file_path):
-            print(f"❌ 代理文件不存在: {file_path}")
+            print(f"❌❌ 代理文件不存在: {file_path}")
             return
         
         print(f"\n" + "="*60)
-        print(f"🎯 开始测试 {info['name']} 代理")
-        print(f"📁 代理文件: {file_path}")
+        print(f"🎯🎯 开始测试 {info['name']} 代理")
+        print(f"📁📁 代理文件: {file_path}")
         print("="*60)
         
         # 重置计数器
@@ -805,7 +812,7 @@ class GitHubProxyTester:
         proxies = self.load_proxies(file_path, limit)
         
         if not proxies:
-            print("❌ 没有找到有效的代理，跳过测试")
+            print("❌❌ 没有找到有效的代理，跳过测试")
             return
         
         # 测试代理
@@ -824,7 +831,7 @@ class GitHubProxyTester:
         if successful_results:
             fastest = min(successful_results, key=lambda x: x['latency_ms'])
             
-            print(f"\n🎯 使用示例:")
+            print(f"\n🎯🎯 使用示例:")
             proxy_url = self.get_proxy_url(fastest['proxy'], info['name'])
             print(f"  # 在终端中使用:")
             print(f"  curl -x {proxy_url} {fastest.get('test_url', 'https://example.com')}")
@@ -836,30 +843,30 @@ class GitHubProxyTester:
         
         print(f"\n{'='*60}")
         print(f"✅ {info['name']}代理测试完成!")
-        print(f"📅 完成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"📅📅 完成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print("="*60)
         
         return len(successful_results)
     
     def auto_run(self):
         """自动运行完整的测试流程"""
-        print("🚀 开始GitHub自动代理测试")
-        print(f"📁 工作目录: {self.base_dir}")
-        print(f"💾 结果目录: {self.result_dir}")
+        print("🚀🚀 开始GitHub自动代理测试")
+        print(f"📁📁 工作目录: {self.base_dir}")
+        print(f"💾💾 结果目录: {self.result_dir}")
         print("="*60)
         
         start_time = time.time()
         
         # 1. 下载代理
-        print("\n📥 步骤1: 下载代理")
+        print("\n📥📥 步骤1: 下载代理")
         downloaded_count = self.download_and_classify_proxies()
         
         # 2. 导入上次成功的代理
-        print("\n📥 步骤2: 导入上次成功的代理")
+        print("\n📥📥 步骤2: 导入上次成功的代理")
         self.import_previous_successful_proxies()
         
         # 3. 依次测试各种类型的代理
-        print("\n🧪 步骤3: 开始测试代理")
+        print("\n🧪🧪 步骤3: 开始测试代理")
         
         test_results = {}
         proxy_types = ['http', 'https', 'socks4', 'socks5']
@@ -871,7 +878,7 @@ class GitHubProxyTester:
                 
                 if os.path.exists(file_path):
                     print(f"\n" + "="*60)
-                    print(f"🧪 测试 {info['name']} 代理")
+                    print(f"🧪🧪 测试 {info['name']} 代理")
                     print("="*60)
                     
                     successful_count = self.test_proxy_type(proxy_type, max_workers=20, limit=0)
@@ -880,19 +887,19 @@ class GitHubProxyTester:
                     # 短暂暂停，避免请求过于密集
                     time.sleep(2)
                 else:
-                    print(f"❌ 跳过{info['name']}代理测试，文件不存在: {file_path}")
+                    print(f"❌❌ 跳过{info['name']}代理测试，文件不存在: {file_path}")
                     test_results[proxy_type] = 0
             else:
-                print(f"❌ 未知代理类型: {proxy_type}")
+                print(f"❌❌ 未知代理类型: {proxy_type}")
                 test_results[proxy_type] = 0
         
         # 4. 生成测试报告
         print("\n" + "="*60)
-        print("📊 测试报告")
+        print("📊📊 测试报告")
         print("="*60)
         
         total_successful = sum(test_results.values())
-        print(f"📈 总成功代理数: {total_successful}")
+        print(f"📈📈 总成功代理数: {total_successful}")
         
         for proxy_type, count in test_results.items():
             if proxy_type in self.proxy_files:
@@ -903,8 +910,8 @@ class GitHubProxyTester:
         minutes = int(total_time // 60)
         seconds = int(total_time % 60)
         
-        print(f"\n⏱ 总耗时: {minutes}分{seconds}秒")
-        print(f"💾 结果文件保存在: {self.result_dir}")
+        print(f"\n⏱⏱⏱ 总耗时: {minutes}分{seconds}秒")
+        print(f"💾💾 结果文件保存在: {self.result_dir}")
         
         # 生成README文件
         self.generate_readme(test_results, total_time)
@@ -916,10 +923,10 @@ class GitHubProxyTester:
         readme_file = os.path.join(self.base_dir, "README.md")
         
         with open(readme_file, 'w', encoding='utf-8') as f:
-            f.write("# 🔍 代理测试仓库\n\n")
+            f.write("# 🔍🔍 代理测试仓库\n\n")
             f.write("自动测试和验证HTTP、HTTPS、SOCKS4、SOCKS5代理\n\n")
             
-            f.write("## 📊 最新测试结果\n\n")
+            f.write("## 📊📊 最新测试结果\n\n")
             f.write(f"**最后更新:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
             
             f.write("| 代理类型 | 成功数量 | 测试时间 |\n")
@@ -934,7 +941,7 @@ class GitHubProxyTester:
             seconds = int(total_time % 60)
             f.write(f"| **总计** | **{sum(test_results.values())}** | **{minutes}分{seconds}秒** |\n\n")
             
-            f.write("## 📁 文件说明\n\n")
+            f.write("## 📁📁 文件说明\n\n")
             f.write("- `proxy_tester.py` - 主测试脚本\n")
             f.write("- `source.txt` - 代理源配置\n")
             f.write("- `ym.txt` - 测试网站列表\n")
@@ -944,7 +951,7 @@ class GitHubProxyTester:
             f.write("- `sock5.txt` - SOCKS5代理列表\n")
             f.write("- `result/` - 测试结果目录\n\n")
             
-            f.write("## 🚀 使用方法\n\n")
+            f.write("## 🚀🚀🚀 使用方法\n\n")
             f.write("### 自动运行\n")
             f.write("```bash\npython proxy_tester.py\n```\n\n")
             
@@ -954,7 +961,7 @@ class GitHubProxyTester:
             f.write("tester.auto_run()  # 自动运行完整流程\n")
             f.write("```\n\n")
             
-            f.write("## ⚙️ 配置说明\n\n")
+            f.write("## ⚙⚙⚙️ 配置说明\n\n")
             f.write("### source.txt 格式\n")
             f.write("```json\n")
             f.write("[\n")
@@ -973,10 +980,10 @@ class GitHubProxyTester:
             f.write("https://telegram.org\n")
             f.write("```\n\n")
             
-            f.write("## 📄 许可证\n")
+            f.write("## 📄📄 许可证\n")
             f.write("MIT License\n")
         
-        print(f"📄 已生成README文件: {readme_file}")
+        print(f"📄📄 已生成README文件: {readme_file}")
 
 def main():
     """主函数"""
@@ -988,7 +995,7 @@ def main():
     except KeyboardInterrupt:
         print("\n\n⚠️ 用户中断程序")
     except Exception as e:
-        print(f"\n❌ 发生错误: {e}")
+        print(f"\n❌❌ 发生错误: {e}")
         import traceback
         traceback.print_exc()
 
