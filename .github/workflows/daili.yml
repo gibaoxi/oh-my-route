@@ -44,22 +44,21 @@ jobs:
       working-directory: ./daili
       run: |
         python daili.py
-        
-    - name: Commit and push results
+    - name: 提交更改
       run: |
+        echo "💾 准备提交更改..."
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        
-        # 检查是否有更改
-        git add -A
+          
+          # 检查是否有更改
+        git status
+          
         if git diff-index --quiet HEAD --; then
           echo "ℹ️ 没有检测到更改，跳过提交"
         else
-          # 拉取远程更改（避免冲突）
-          git pull origin main --rebase
-          # 提交更改
-          git commit -m "🤖 Auto update proxy results"
+          echo "📝 检测到更改，正在提交..."
+          git add -A
+          git commit -m "🤖 自动更新 - $(date +'%Y-%m-%d %H:%M:%S')"
           git push
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "✅ 更改已提交到仓库"
+          fi    
