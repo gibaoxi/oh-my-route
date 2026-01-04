@@ -1,64 +1,33 @@
-name: Proxy Tester
-
+name: Proxy Test
 on:
   schedule:
-    - cron: '0 */4 * * *'  # 每4小时运行一次
-  workflow_dispatch:       # 手动触发
-  push:
-    branches: [main]
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
 
 jobs:
-  test-proxies:
+  test:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # 获取所有历史记录，避免浅克隆问题
-      
-    - name: Set up Python
-      uses: actions/setup-python@v4
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.10'
         
-    - name: Install dependencies
+    - name: Run test
       working-directory: ./daili
       run: |
-        pip install --upgrade pip
-        if [ -f "requirements.txt" ]; then
-          pip install -r requirements.txt
-        else
-          pip install requests urllib3
-        fi
-        
-    - name: Create necessary directories
-      working-directory: ./daili
-      run: |
-        # 确保result目录存在
         mkdir -p result
-        echo "✅ 目录结构准备完成"
-        ls -la
-        
-    - name: Run proxy test
-      working-directory: ./daili
-      run: |
+        pip install requests urllib3
         python daili.py
-    - name: 提交更改
+        
+    - name: Simple commit
       run: |
-        echo "💾 准备提交更改..."
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-          
-          # 检查是否有更改
-        git status
-          
-        if git diff-index --quiet HEAD --; then
-          echo "ℹ️ 没有检测到更改，跳过提交"
-        else
-          echo "📝 检测到更改，正在提交..."
-          git add -A
-          git commit -m "🤖 自动更新 - $(date +'%Y-%m-%d %H:%M:%S')"
-          git push
-          echo "✅ 更改已提交到仓库"
-          fi    
+        git add -A
+        git diff --cached --quiet || (git commit -m "Update proxies" && git pull --rebase origin main && git push)
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
