@@ -30,7 +30,7 @@ jobs:
       env:
         TOKEN: ${{ secrets.TG_BOT_TOKEN }}
         ID: ${{ secrets.TG_USER_ID }}
-      run: python tesk/proxy_monitor.py  # 修改为你的Python脚本文件名
+      run: python tesk/tesk.py  # 修改为你的Python脚本文件名
     
     - name: Check for changes
       id: git-check
