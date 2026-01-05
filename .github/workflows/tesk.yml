@@ -1,0 +1,56 @@
+name: tesk
+
+on:
+  schedule:
+    - cron: '0 20 * * *'  # 每6小时运行一次
+  workflow_dispatch:  # 允许手动触发
+  push:
+    branches: [ main ]
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0  # 获取所有历史记录
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: pip install requests
+    
+    - name: Run proxy monitor
+      env:
+        TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+        ID: ${{ secrets.TG_USER_ID }}
+      run: python tesk/proxy_monitor.py  # 修改为你的Python脚本文件名
+    
+    - name: Check for changes
+      id: git-check
+      run: |
+        git add .
+        if git diff-index --quiet HEAD --; then
+          echo "changes=false" >> $GITHUB_OUTPUT
+        else
+          echo "changes=true" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Configure Git
+      if: steps.git-check.outputs.changes == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+    
+    - name: Commit and push changes
+      if: steps.git-check.outputs.changes == 'true'
+      run: |
+        git add .
+        git commit -m "🤖 Auto-update proxy data $(date +'%Y-%m-%d %H:%M:%S')"
+        git push
