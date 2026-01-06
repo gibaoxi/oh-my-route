@@ -118,6 +118,9 @@ async function mainHandler({ req, url, headers, res, env }) {
     const rawHost = headers.get('host') || headers.get('Host') || 'localhost';
     const userAgent = headers.get('User-Agent') || '';
     log(`[mainHandler]-->rawHost: ${rawHost}`);
+    
+    // 新增：加载代理IP列表
+    await loadProxyIPs(env);
     const rawEnableLog = url.searchParams.get('ENABLE_LOG') || getEnvVar('ENABLE_LOG', env) || enableLog;
     enableLog = parseBool(rawEnableLog, enableLog);
     const rawEnableOpen = getEnvVar('ENABLE_OPEN', env) || enableOpen;
@@ -846,15 +849,28 @@ function splitNodeData(uniqueIpTxt, noTLS, host, uuid, userAgent, protType, nat6
     log(`splitNodeData----> \n host: ${host} \n uuid: ${uuid} \n protType: ${protType} \n hostRemark: ${hostRemark}`);
 
     const regionMap = {
-        'SG': '🇸🇬 SG',
-        'HK': '🇭🇰 HK',
-        'KR': '🇰🇷 KR',
-        'JP': '🇯🇵 JP',
-        'GB': '🇬🇧 GB',
-        'US': '🇺🇸 US',
-        'TW': '🇼🇸 TW',
-        'CF': '📶 CF'
+        'SG': '🇸🇸🇬🇬 SG',
+        'HK': '🇭🇭🇰🇰 HK',
+        'KR': '🇰🇰🇷🇷 KR',
+        'JP': '🇯🇯🇵🇵 JP',
+        'GB': '🇬🇬🇧🇧 GB',
+        'US': '🇺🇺🇸🇸 US',
+        'TW': '🇼🇼🇸🇸 TW',
+        'CF': '📶📶 CF'
     };
+
+    // 新增：代理IP循环分配函数
+    function getNextProxyIP(nodeIndex) {
+        if (proxyIPsAll.length === 0) {
+            return paddr;
+        }
+        // 按节点索引循环使用代理IP
+        const proxyIndex = nodeIndex % proxyIPsAll.length;
+        const proxyIP = proxyIPsAll[proxyIndex];
+        log(`[getNextProxyIP] nodeIndex: ${nodeIndex}, proxyIndex: ${proxyIndex}, proxyIP: ${proxyIP}`);
+        return proxyIP;
+    }
+
     function isLikelyHost(str) {
         if (!str) return false;
         str = str.trim();
@@ -864,7 +880,8 @@ function splitNodeData(uniqueIpTxt, noTLS, host, uuid, userAgent, protType, nat6
         return false;
     }
 
-    const responseBody = uniqueIpTxt.map(raw => {
+    // 修改这里：为每个节点按顺序分配代理IP
+    const responseBody = uniqueIpTxt.map((raw, nodeIndex) => {
         const ipTxt = String(raw).trim();
         log(`splitNodeData---> ipTxt: ${ipTxt}`);
         let proxyip = "";
@@ -879,9 +896,7 @@ function splitNodeData(uniqueIpTxt, noTLS, host, uuid, userAgent, protType, nat6
             if (isLikelyHost(candidate)) {
                 proxyip = candidate;
                 main = ipTxt.slice(0, lastAt);
-                log(`splitNodeData--detected-proxy--> proxyip: ${proxyip}  main: ${main}`);
-            } else {
-                log(`splitNodeData--at-in-remark--> ignored candidate after @: ${candidate}`);
+                log(`splitNodeData--detected-proxy--> proxyip: ${proxyip} main: ${main}`);
             }
         }
 
@@ -906,8 +921,9 @@ function splitNodeData(uniqueIpTxt, noTLS, host, uuid, userAgent, protType, nat6
             remarks = regionMap[rmKey];
         }
 
-        proxyip = proxyip || paddr;
-        log(`splitNodeData--final--> \n address: ${address} \n port: ${port} \n remarks: ${remarks} \n proxyip: ${proxyip}`);
+        // 关键修改：按节点索引顺序分配代理IP
+        proxyip = proxyip || getNextProxyIP(nodeIndex);
+        log(`splitNodeData--final--> address: ${address} port: ${port} remarks: ${remarks} proxyip: ${proxyIP}`);
 
         if (noTLS !== 'true' && portSet_http.has(parseInt(port))) {
             return null;
