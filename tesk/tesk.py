@@ -8,7 +8,7 @@ from datetime import datetime
 class Socks5ProxyCollectorWithNotify:
     def __init__(self):
         self.socks5_url = "https://mtpro.xyz/socks5"
-        self.save_dir = "./tesk"
+        self.save_dir = "/storage/emulated/0/cache/tesk"
         self.filename = "telsocks.json"
         self.target_countries = ["SG", "HK", "KR", "JP"]  # 只关注这四个国家
         
@@ -84,7 +84,7 @@ class Socks5ProxyCollectorWithNotify:
             return False
     
     def test_proxy_comprehensive(self, proxy_info: dict) -> bool:
-        """综合测试代理（TCP + SOCKS5）"""
+        """综合测试代理（TCP + SOCKS5），TCP失败直接跳过SOCKS5测试"""
         ip = proxy_info.get("ip", "")
         port = proxy_info.get("port", "")
         
@@ -94,15 +94,12 @@ class Socks5ProxyCollectorWithNotify:
         # 先测试TCP连接
         tcp_success = self.test_tcp_connection(ip, port)
         if not tcp_success:
+            print(f"🚫 TCP连接失败，跳过SOCKS5代理测试: {ip}:{port}")
             return False
         
-        # 再测试SOCKS5代理功能
+        # TCP连接成功，继续测试SOCKS5代理功能
         proxy_success = self.test_socks5_proxy(ip, port)
-        if not proxy_success:
-            return False
-        
-        # 只有两个测试都通过才返回True
-        return tcp_success and proxy_success
+        return proxy_success
     
     def filter_tested_proxies(self, proxies_by_country: dict) -> dict:
         """过滤并测试代理，只返回测试通过的代理"""
@@ -129,7 +126,6 @@ class Socks5ProxyCollectorWithNotify:
         tested_proxies = {k: v for k, v in tested_proxies.items() if v}
         return tested_proxies
 
-    # 原有的其他方法保持不变...
     def load_telegram_config(self):
         """从环境变量加载Telegram配置"""
         try:
