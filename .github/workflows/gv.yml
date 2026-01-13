@@ -5,6 +5,8 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    paths:
+      - 'gv.py'
   workflow_dispatch:
   schedule:
     - cron: '3 21 * * *'
