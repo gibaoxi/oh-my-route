@@ -333,9 +333,9 @@ class Socks5ProxyCollectorWithNotify:
     def format_target_countries_message(self, proxies_by_country, title):
         """格式化目标国家代理消息"""
         if not proxies_by_country:
-            return f"📊📊 {title}: 无"
+            return f"{title}: 无"
         
-        message = f"📊📊 {title}:\n\n"
+        message = f"{title}:\n\n"
         
         for country, proxies in proxies_by_country.items():
             if country not in self.target_countries:
@@ -355,9 +355,9 @@ class Socks5ProxyCollectorWithNotify:
                     ping_display = f"🔴🔴 {ping}ms"
                 
                 if telegram_link:
-                    message += f'  {i}. <a href="{telegram_link}">{proxy["ip_port"]}</a> {ping_display}\n'
+                    message += f'  {i}. <a href="{telegram_link}">{proxy["ip_port"]}</a> \n'
                 else:
-                    message += f'  {i}. {proxy["ip_port"]} {ping_display}\n'
+                    message += f'  {i}. {proxy["ip_port"]} \n'
             
             message += "\n"
         
@@ -366,9 +366,9 @@ class Socks5ProxyCollectorWithNotify:
     def format_all_proxies_message(self, proxies_by_country, title):
         """格式化所有代理消息（显示所有国家）"""
         if not proxies_by_country:
-            return f"📊📊 {title}: 无"
+            return f"{title}: 无"
         
-        message = f"📊📊 {title}:\n\n"
+        message = f"{title}:\n\n"
         
         # 先显示目标国家
         for country in self.target_countries:
@@ -388,9 +388,9 @@ class Socks5ProxyCollectorWithNotify:
                         ping_display = f"🔴🔴 {ping}ms"
                     
                     if telegram_link:
-                        message += f'  {i}. <a href="{telegram_link}">{proxy["ip_port"]}</a> {ping_display}\n'
+                        message += f'  {i}. <a href="{telegram_link}">{proxy["ip_port"]}</a>\n'
                     else:
-                        message += f'  {i}. {proxy["ip_port"]} {ping_display}\n'
+                        message += f'  {i}. {proxy["ip_port"]}\n'
                 
                 message += "\n"
         
@@ -416,9 +416,9 @@ class Socks5ProxyCollectorWithNotify:
                         ping_display = f"🔴🔴 {ping}ms"
                     
                     if telegram_link:
-                        message += f'  {i}. <a href="{telegram_link}">{proxy["ip_port"]}</a> {ping_display}\n'
+                        message += f'  {i}. <a href="{telegram_link}">{proxy["ip_port"]}</a> \n'
                     else:
-                        message += f'  {i}. {proxy["ip_port"]} {ping_display}\n'
+                        message += f'  {i}. {proxy["ip_port"]}\n'
                 
                 message += "\n"
         
@@ -514,15 +514,11 @@ class Socks5ProxyCollectorWithNotify:
             
             # 新增代理部分（只显示目标国家）
             if new_proxies:
-                total_new = sum(len(p) for p in new_proxies.values())
-                message_parts.append(f"🎯🎯 发现 {total_new} 个新增代理")
-                message_parts.append(self.format_target_countries_message(new_proxies, "新增代理"))
+                total_new = sum(len(p) for p in new_proxies.values()) message_parts.append(self.format_target_countries_message(new_proxies, "新增代理"))
             
             # 共同代理部分（显示所有国家）
             if common_proxies:
-                total_common = sum(len(p) for p in common_proxies.values())
-                message_parts.append(f"📊📊 发现 {total_common} 个稳定代理")
-                message_parts.append(self.format_all_proxies_message(common_proxies, "稳定代理"))
+                total_common = sum(len(p) for p in common_proxies.values()) message_parts.append(self.format_all_proxies_message(common_proxies, "稳定代理"))
             
             full_message = "\n\n".join(message_parts)
             self.send_telegram_message(full_message)
