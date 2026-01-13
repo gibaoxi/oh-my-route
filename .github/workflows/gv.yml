@@ -3,6 +3,8 @@ name: gv
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'gv.py'
   pull_request:
     branches: [ main ]
     paths:
