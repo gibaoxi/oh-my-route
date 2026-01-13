@@ -8,7 +8,7 @@ from datetime import datetime
 class Socks5ProxyCollectorWithNotify:
     def __init__(self):
         self.socks5_url = "https://mtpro.xyz/socks5"
-        self.save_dir = "/storage/emulated/0/cache/tesk"
+        self.save_dir = "./tesk"
         self.filename = "telsocks.json"
         self.target_countries = ["SG", "HK", "KR", "JP"]  # 只关注这四个国家
         
