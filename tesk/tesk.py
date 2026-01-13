@@ -380,17 +380,11 @@ class Socks5ProxyCollectorWithNotify:
                     telegram_link = self.create_telegram_proxy_link(proxy["ip"], proxy["port"])
                     ping = proxy["ping"]
                     
-                    if ping < 200:
-                        ping_display = f"🟢🟢🟢 {ping}ms"
-                    elif ping < 500:
-                        ping_display = f"🟡🟡🟡 {ping}ms"
-                    else:
-                        ping_display = f"🔴🔴 {ping}ms"
                     
                     if telegram_link:
-                        message += f'  {i}. <a href="{telegram_link}">{proxy["ip_port"]}</a>\n'
+                        message += f'  {i}. <a href="{telegram_link}">{proxy["ip_port"]}</a>{ping}ms\n'
                     else:
-                        message += f'  {i}. {proxy["ip_port"]}\n'
+                        message += f'  {i}. {proxy["ip_port"]}{ping}ms\n'
                 
                 message += "\n"
         
@@ -407,18 +401,12 @@ class Socks5ProxyCollectorWithNotify:
                 for i, proxy in enumerate(proxies_list, 1):
                     telegram_link = self.create_telegram_proxy_link(proxy["ip"], proxy["port"])
                     ping = proxy["ping"]
-                    
-                    if ping < 200:
-                        ping_display = f"🟢🟢🟢 {ping}ms"
-                    elif ping < 500:
-                        ping_display = f"🟡🟡🟡 {ping}ms"
-                    else:
-                        ping_display = f"🔴🔴 {ping}ms"
+                   
                     
                     if telegram_link:
-                        message += f'  {i}. <a href="{telegram_link}">{proxy["ip_port"]}</a> \n'
+                        message += f'  {i}. <a href="{telegram_link}">{proxy["ip_port"]}</a> {ping}ms\n'
                     else:
-                        message += f'  {i}. {proxy["ip_port"]}\n'
+                        message += f'  {i}. {proxy["ip_port"]}{ping}ms\n'
                 
                 message += "\n"
         
