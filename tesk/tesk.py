@@ -341,7 +341,7 @@ class Socks5ProxyCollectorWithNotify:
             if country not in self.target_countries:
                 continue
                 
-            message += f"🇺🇺🇳🇳 {country} ({len(proxies)}个):\n"
+            message += f"{country} ({len(proxies)}个):"
             
             for i, proxy in enumerate(proxies, 1):
                 telegram_link = self.create_telegram_proxy_link(proxy["ip"], proxy["port"])
@@ -374,7 +374,7 @@ class Socks5ProxyCollectorWithNotify:
         for country in self.target_countries:
             if country in proxies_by_country:
                 proxies_list = proxies_by_country[country]
-                message += f"🇺🇺🇳🇳 {country} ({len(proxies_list)}个):\n"
+                message += f"{country} ({len(proxies_list)}个):"
                 
                 for i, proxy in enumerate(proxies_list, 1):
                     telegram_link = self.create_telegram_proxy_link(proxy["ip"], proxy["port"])
@@ -401,9 +401,8 @@ class Socks5ProxyCollectorWithNotify:
                 other_countries.append((country, proxies_list))
         
         if other_countries:
-            message += "其他地区:\n"
             for country, proxies_list in other_countries:
-                message += f"🇺🇺🇳🇳 {country} ({len(proxies_list)}个):\n"
+                message += f"{country} ({len(proxies_list)}个):"
                 
                 for i, proxy in enumerate(proxies_list, 1):
                     telegram_link = self.create_telegram_proxy_link(proxy["ip"], proxy["port"])
