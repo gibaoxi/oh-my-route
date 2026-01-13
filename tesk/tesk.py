@@ -514,11 +514,13 @@ class Socks5ProxyCollectorWithNotify:
             
             # 新增代理部分（只显示目标国家）
             if new_proxies:
-                total_new = sum(len(p) for p in new_proxies.values()) message_parts.append(self.format_target_countries_message(new_proxies, "新增代理"))
+                total_new = sum(len(p) for p in new_proxies.values()) 
+                message_parts.append(self.format_target_countries_message(new_proxies, "新增代理"))
             
             # 共同代理部分（显示所有国家）
             if common_proxies:
-                total_common = sum(len(p) for p in common_proxies.values()) message_parts.append(self.format_all_proxies_message(common_proxies, "稳定代理"))
+                total_common = sum(len(p) for p in common_proxies.values()) 
+                message_parts.append(self.format_all_proxies_message(common_proxies, "稳定代理"))
             
             full_message = "\n\n".join(message_parts)
             self.send_telegram_message(full_message)
