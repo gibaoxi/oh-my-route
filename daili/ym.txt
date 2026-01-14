@@ -1,2 +1,2 @@
 https://httpbin.org/ip
-mtpro.xyz/api?type=socks
+https://mtpro.xyz/api/?type=socks
