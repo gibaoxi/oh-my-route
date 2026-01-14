@@ -534,10 +534,10 @@ class GitHubProxyTester:
                     else:
                         # 检查页面是否包含常见HTML标记
                         page_text = response.text.lower()
-                        common_indicators = ['html', 'http', 'www', 'com', 'net', 'org', 'title', 'body']
+                        common_indicators = ['html', 'http', 'www', 'com', 'net', 'org', 'title', 'body', 'origin']
                         indicators_found = sum(1 for indicator in common_indicators if indicator in page_text)
                         
-                        if indicators_found >= 3:
+                        if indicators_found >= 1:
                             result['success'] = True
                             result['error'] = f"未找到 '{check_string}' 但页面有效"
                         else:
