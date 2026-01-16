@@ -44,7 +44,7 @@ if __name__ == '__main__':
 }  
     qbtr(urls_to_lists)
     TITLE = "同人小说"
-    CONTENT = f'全本同人{qbt}\n同人圈{tr}\n同人小说{trx}\n精品小说{jpx}\n笔仙阁{bx}\n同人社{trs}'
+    CONTENT = f'全本同人m{qbt}\n同人圈{tr}\n同人小说{trx}\n精品小说{jpx}\n笔仙阁m{bx}\n同人社{trs}'
     with open('novel.txt', 'w',encoding='utf-8') as file:
         file.write(CONTENT)
 
